@@ -11,7 +11,7 @@ services:
     image: redis:alpine
     restart: always
     volumes:
-      - "/var/www/html/mailu/redis:/data"
+      - "${ROOT}/redis:/data"
     depends_on:
       - resolver
     dns:
@@ -35,8 +35,8 @@ services:
       - "143:143"
       - "993:993"
     volumes:
-      - "/var/www/html/mailu/certs:/certs"
-      - "/var/www/html/mailu/overrides/nginx:/overrides:ro"
+      - "${ROOT}/certs:/certs"
+      - "${ROOT}/overrides/nginx:/overrides:ro"
     depends_on:
       - resolver
     dns:
@@ -55,8 +55,8 @@ services:
     restart: always
     env_file: mailu.env
     volumes:
-      - "/var/www/html/mailu/data:/data"
-      - "/var/www/html/mailu/dkim:/dkim"
+      - "${ROOT}/data:/data"
+      - "${ROOT}/dkim:/dkim"
     depends_on:
       - redis
       - resolver
@@ -68,8 +68,8 @@ services:
     restart: always
     env_file: mailu.env
     volumes:
-      - "/var/www/html/mailu/mail:/mail"
-      - "/var/www/html/mailu/overrides/dovecot:/overrides:ro"
+      - "${ROOT}/mail:/mail"
+      - "${ROOT}/overrides/dovecot:/overrides:ro"
     depends_on:
       - front
       - resolver
@@ -81,8 +81,8 @@ services:
     restart: always
     env_file: mailu.env
     volumes:
-      - "/var/www/html/mailu/mailqueue:/queue"
-      - "/var/www/html/mailu/overrides/postfix:/overrides:ro"
+      - "${ROOT}/mailqueue:/queue"
+      - "${ROOT}/overrides/postfix:/overrides:ro"
     depends_on:
       - front
       - resolver
@@ -95,8 +95,8 @@ services:
     restart: always
     env_file: mailu.env
     volumes:
-      - "/var/www/html/mailu/filter:/var/lib/rspamd"
-      - "/var/www/html/mailu/overrides/rspamd:/etc/rspamd/override.d:ro"
+      - "${ROOT}/filter:/var/lib/rspamd"
+      - "${ROOT}/overrides/rspamd:/etc/rspamd/override.d:ro"
     depends_on:
       - front
       - resolver
